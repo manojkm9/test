@@ -13,6 +13,9 @@ jobs:
     - name: Generate output
       id: step1
       run: echo "example_output=Hello from the first job!" >> $GITHUB_ENV
+    - name: Set output (compatibility step)
+      id: step2
+      run: echo "::set-output name=example_output::Hello from the first job!"
 
   second_job:
     runs-on: ubuntu-latest
@@ -20,6 +23,4 @@ jobs:
 
     steps:
     - name: Use output from the first job
-      env:
-        EXAMPLE_OUTPUT: ${{ needs.first_job.outputs.example_output }}
-      run: echo "Output from first job:$EXAMPLE_OUTPUT"
+      run: echo "Output from first job: ${{ needs.first_job.outputs.example_output }}"
